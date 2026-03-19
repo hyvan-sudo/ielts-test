@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic Reading — Ocean Acidification</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f2efe8;
+    --border: #ddd9ce;
+    --border2: #c8c3b5;
+    --text: #1a1915;
+    --text2: #5a5750;
+    --text3: #9a9590;
+    --accent: #1a4a7a;
+    --accent-light: #e8f0f8;
+    --accent-mid: #4a7aaa;
+    --green: #2d6a4f;
+    --green-light: #e8f4ee;
+    --red: #8b2020;
+    --red-light: #faeaea;
+    --amber: #7a4a10;
+    --amber-light: #fdf3e0;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .site-header {
+    background: var(--accent);
+    color: #fff;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .site-header .brand {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .site-header .brand span {
+    font-weight: 400;
+    opacity: .75;
+    font-size: 13px;
+    margin-left: 8px;
+  }
+  .header-timer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 8px;
+    padding: 6px 14px;
+  }
+  .header-timer .t-val {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    min-width: 54px;
+  }
+  .header-timer .t-btn {
+    font-size: 12px;
+    background: rgba(255,255,255,.18);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .header-timer .t-btn:hover { background: rgba(255,255,255,.3); }
+
+  /* Intro banner */
+  .intro-banner {
+    background: var(--accent-light);
+    border-bottom: 1px solid var(--border);
+    padding: .85rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .intro-banner .tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+  }
+  .intro-banner p {
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 0;
+    max-width: 1260px;
+    margin: 0 auto;
+    height: calc(100vh - 56px - 44px);
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; height: auto; }
+    .passage-col { height: 60vh; }
+    .questions-col { height: auto; }
+  }
+
+  .passage-col {
+    overflow-y: auto;
+    padding: 2rem 2.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .questions-col {
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--surface2);
+  }
+
+  /* Passage */
+  .passage-title {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .passage-meta {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 1.75rem;
+    font-style: italic;
+  }
+  .para {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    line-height: 1.85;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+  .para-label {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    padding: 1px 7px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* Questions */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .sec-num {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    color: var(--accent);
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+  .sec-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .sec-instruction {
+    font-size: 12.5px;
+    color: var(--text2);
+    background: var(--amber-light);
+    border-left: 3px solid #e9a84c;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: .75rem;
+    transition: border-color .15s;
+  }
+  .q-card:hover { border-color: var(--border2); }
+  .q-num {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 5px;
+  }
+  .q-text {
+    font-family: 'Lora', serif;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  /* TFNG options */
+  .tfng-opts {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tfng-btn {
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--surface2);
+    color: var(--text2);
+    transition: all .15s;
+  }
+  .tfng-btn:hover { background: var(--accent-light); border-color: var(--accent-mid); color: var(--accent); }
+  .tfng-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tfng-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .tfng-btn.wrong { background: var(--red-light); border-color: var(--red); color: var(--red); }
+  .tfng-btn.show-correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+
+  /* MC options */
+  .mc-opts { display: flex; flex-direction: column; gap: 5px; }
+  .mc-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface2);
+    transition: all .15s;
+    line-height: 1.5;
+  }
+  .mc-opt:hover { background: var(--accent-light); border-color: var(--accent-mid); }
+  .mc-opt .mc-letter {
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .mc-opt.selected { background: var(--accent-light); border-color: var(--accent); }
+  .mc-opt.selected .mc-letter { color: var(--accent); }
+  .mc-opt.correct { background: var(--green-light); border-color: var(--green); }
+  .mc-opt.correct .mc-letter { color: var(--green); }
+  .mc-opt.wrong { background: var(--red-light); border-color: var(--red); }
+  .mc-opt.wrong .mc-letter { color: var(--red); }
+  .mc-opt.show-correct { background: var(--green-light); border-color: var(--green); }
+  .mc-opt.show-correct .mc-letter { color: var(--green); }
+
+  /* Fill input */
+  .fill-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .fill-wrap .fill-before { font-family: 'Lora', serif; font-size: 13.5px; color: var(--text2); }
+  .fill-input {
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    border: 1.5px solid var(--border2);
+    border-radius: 7px;
+    background: var(--surface2);
+    color: var(--text);
+    outline: none;
+    width: 160px;
+    transition: border-color .15s;
+  }
+  .fill-input:focus { border-color: var(--accent); background: #fff; }
+  .fill-input.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .fill-input.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .fill-hint { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+  /* Submit */
+  .submit-section { padding: 1rem 0 .5rem; }
+  .submit-btn {
+    width: 100%;
+    padding: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+  }
+  .submit-btn:hover { background: #0f3360; }
+  .submit-btn:active { transform: scale(.99); }
+  .submit-btn:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; }
+
+  /* Result */
+  .result-card {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .result-card.show { display: block; animation: fadeUp .4s ease; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: none; } }
+
+  .band-display {
+    margin: .5rem 0 .25rem;
+  }
+  .band-number {
+    font-family: 'Lora', serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .band-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 4px;
+    margin-bottom: 1.25rem;
+  }
+
+  .score-pills {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-width: 76px;
+  }
+  .pill-num { font-size: 20px; font-weight: 500; color: var(--text); }
+  .pill-lbl { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .band-chart {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 1.25rem;
+  }
+  .band-chart th {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .band-chart td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .band-chart tr.active td {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .result-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .action-btn {
+    padding: 8px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--surface2);
+    color: var(--text);
+    transition: all .15s;
+  }
+  .action-btn:hover { background: var(--accent-light); border-color: var(--accent-mid); color: var(--accent); }
+  .action-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .action-btn.primary:hover { background: #0f3360; }
+
+  /* Answer key shown after submit */
+  .answer-key { margin-top: .5rem; text-align: left; }
+  .ak-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 8px; }
+  .ak-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 5px; }
+  .ak-item {
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+  .ak-item.ak-right { background: var(--green-light); border-color: #97c459; color: var(--green); }
+  .ak-item.ak-wrong { background: var(--red-light); border-color: #f09595; color: var(--red); }
+  .ak-item .aq-n { font-weight: 500; }
+  .ak-item .aq-a { font-style: italic; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+  /* Print */
+  @media print {
+    .site-header, .header-timer, .intro-banner, .questions-col { display: none; }
+    .layout { display: block; }
+    .passage-col { padding: 1rem; border: none; overflow: visible; height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">IELTS Reading <span>Academic · Practice Test</span></div>
+  <div class="header-timer">
+    <span class="t-val" id="timer">20:00</span>
+    <button class="t-btn" id="tbtn" onclick="toggleTimer()">&#9654; Start</button>
+  </div>
+</header>
+
+<div class="intro-banner">
+  <span class="tag">Academic Reading</span>
+  <p>1 passage &nbsp;·&nbsp; 7 paragraphs &nbsp;·&nbsp; 11 questions (TFNG × 5, Multiple Choice × 5, Sentence Completion × 1) &nbsp;·&nbsp; Recommended time: 20 minutes</p>
+</div>
+
+<div class="layout">
+
+  <!-- PASSAGE -->
+  <div class="passage-col">
+    <h1 class="passage-title">The Silent Emergency: Ocean Acidification and Marine Ecosystems</h1>
+    <p class="passage-meta">Adapted for IELTS Academic Reading practice</p>
+
+    <p class="para"><span class="para-label">A</span>Since the beginning of the Industrial Revolution, the world's oceans have absorbed approximately 30 percent of the carbon dioxide released by human activities. While this has significantly moderated the pace of climate change on land, it has triggered a profound chemical transformation beneath the waves. As CO₂ dissolves in seawater, it forms carbonic acid, which subsequently releases hydrogen ions and lowers the pH of the ocean. This process, known as ocean acidification, has already reduced average ocean surface pH from 8.2 to 8.1 — a seemingly modest figure that in fact represents a 26 percent increase in acidity, owing to the logarithmic nature of the pH scale.</p>
+
+    <p class="para"><span class="para-label">B</span>The ramifications for marine organisms that build shells or skeletons from calcium carbonate are particularly severe. Pteropods — tiny free-swimming molluscs sometimes called "sea butterflies" — provide one of the starkest illustrations. Studies conducted in the Southern Ocean have documented the literal dissolution of pteropod shells in waters that are becoming increasingly corrosive. Since pteropods constitute a critical link in polar food webs, their decline threatens not only specialised predators such as the pink salmon and the mackerel, but also the broader ecosystem stability of entire ocean regions.</p>
+
+    <p class="para"><span class="para-label">C</span>Coral reefs, often described as the rainforests of the sea, face an equally precarious future. Reef-building corals secrete calcium carbonate skeletons, and the rate at which they can do so is directly inhibited by rising acidity. Research published by the Australian Institute of Marine Science indicates that calcification rates on the Great Barrier Reef have declined by more than 14 percent since 1990 — the lowest recorded in at least 400 years. Critically, projections suggest that if atmospheric CO₂ reaches 560 parts per million, the chemical conditions necessary for coral calcification will cease to exist across most of the tropics.</p>
+
+    <p class="para"><span class="para-label">D</span>Not all marine species respond to acidification in identical ways, however. Some organisms appear to benefit, at least in the short term. Certain species of seagrass and phytoplankton, which rely on CO₂ for photosynthesis, have shown enhanced growth rates under elevated CO₂ conditions. This apparent advantage has led some commentators to argue that ocean acidification could stimulate marine primary productivity. Yet ecologists caution that such gains are unlikely to offset systemic losses, particularly because the species most severely harmed — calcifying organisms — occupy foundational roles in oceanic food chains.</p>
+
+    <p class="para"><span class="para-label">E</span>The economic consequences of acidification extend far beyond the natural world. Global fisheries and aquaculture industries, which employ an estimated 600 million people worldwide and provide the primary source of protein for more than a billion, face mounting risks. Oyster hatcheries along the Pacific coast of North America have already suffered catastrophic larval failures attributed to corrosive upwelling waters. In 2007 and 2008, one major hatchery in Oregon reported losses exceeding 75 percent of its seed oysters, prompting the industry to invest heavily in water chemistry monitoring systems — a cost now routinely passed on to consumers.</p>
+
+    <p class="para"><span class="para-label">F</span>Despite the scale of these disruptions, ocean acidification remains considerably less prominent in public discourse than atmospheric warming. Scientists point to a troubling asymmetry: while average citizens have developed a tangible sense of rising temperatures through lived experience, the chemistry of the deep ocean is largely invisible and intuitively remote. This so-called "perception gap" has tangible policy implications. Funding for acidification research remains a fraction of what is allocated to terrestrial climate science, and international accords have been slow to incorporate explicit targets for ocean chemistry alongside traditional emissions benchmarks.</p>
+
+    <p class="para"><span class="para-label">G</span>Some researchers are investigating localised interventions, including the addition of alkaline minerals such as olivine or limestone to coastal waters to chemically neutralise acidity. Early trials have demonstrated measurable improvements in local pH levels, and proponents argue that, deployed at scale, such approaches could protect vulnerable ecosystems while broader decarbonisation efforts take effect. Critics, however, warn of unforeseen ecological consequences and point out that without concurrent reductions in CO₂ emissions, any chemical buffering would be temporary at best. The scientific consensus remains that mitigating ocean acidification is inseparable from the imperative to reduce atmospheric carbon dioxide.</p>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="questions-col" id="qcol">
+
+    <!-- TFNG -->
+    <div class="sec-header">
+      <span class="sec-num">Questions 1–5</span>
+      <span class="sec-title">True / False / Not Given</span>
+    </div>
+    <div class="sec-instruction">
+      Do the following statements agree with the information given in the passage?<br>
+      Write <strong>TRUE</strong> if the statement agrees, <strong>FALSE</strong> if it contradicts, or <strong>NOT GIVEN</strong> if there is no information.
+    </div>
+
+    <div class="q-card" id="qc1">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">The oceans have absorbed less than one third of all CO₂ produced by industrial activity since the 1800s.</div>
+      <div class="tfng-opts" data-q="1" data-ans="FALSE">
+        <button class="tfng-btn" onclick="selectTFNG(this,1,'TRUE')">TRUE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,1,'FALSE')">FALSE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,1,'NOT GIVEN')">NOT GIVEN</button>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc2">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">A change in ocean pH from 8.2 to 8.1 represents an increase in acidity of approximately 26 percent.</div>
+      <div class="tfng-opts" data-q="2" data-ans="TRUE">
+        <button class="tfng-btn" onclick="selectTFNG(this,2,'TRUE')">TRUE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,2,'FALSE')">FALSE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,2,'NOT GIVEN')">NOT GIVEN</button>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc3">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">Scientists have identified more than twenty species of pteropod in the Southern Ocean that are currently experiencing shell dissolution.</div>
+      <div class="tfng-opts" data-q="3" data-ans="NOT GIVEN">
+        <button class="tfng-btn" onclick="selectTFNG(this,3,'TRUE')">TRUE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,3,'FALSE')">FALSE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,3,'NOT GIVEN')">NOT GIVEN</button>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc4">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">Calcification rates on the Great Barrier Reef in 1990 were the lowest observed in four centuries.</div>
+      <div class="tfng-opts" data-q="4" data-ans="FALSE">
+        <button class="tfng-btn" onclick="selectTFNG(this,4,'TRUE')">TRUE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,4,'FALSE')">FALSE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,4,'NOT GIVEN')">NOT GIVEN</button>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc5">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">Some species of phytoplankton have demonstrated increased growth in higher-CO₂ ocean conditions.</div>
+      <div class="tfng-opts" data-q="5" data-ans="TRUE">
+        <button class="tfng-btn" onclick="selectTFNG(this,5,'TRUE')">TRUE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,5,'FALSE')">FALSE</button>
+        <button class="tfng-btn" onclick="selectTFNG(this,5,'NOT GIVEN')">NOT GIVEN</button>
+      </div>
+    </div>
+
+    <!-- Multiple Choice -->
+    <div class="sec-header" style="margin-top:.75rem">
+      <span class="sec-num">Questions 6–10</span>
+      <span class="sec-title">Multiple Choice</span>
+    </div>
+    <div class="sec-instruction">Choose the best answer — A, B, C or D.</div>
+
+    <div class="q-card" id="qc6">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">According to paragraph C, what will happen if atmospheric CO₂ reaches 560 ppm?</div>
+      <div class="mc-opts" data-q="6" data-ans="B">
+        <div class="mc-opt" onclick="selectMC(this,6,'A')"><span class="mc-letter">A</span><span>All coral species will immediately become extinct.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,6,'B')"><span class="mc-letter">B</span><span>Chemical conditions required for coral calcification will disappear across most tropical areas.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,6,'C')"><span class="mc-letter">C</span><span>The Great Barrier Reef will have fully dissolved.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,6,'D')"><span class="mc-letter">D</span><span>Coral reefs will migrate to cooler polar waters.</span></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc7">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">The writer mentions oyster hatcheries in Oregon primarily to illustrate that:</div>
+      <div class="mc-opts" data-q="7" data-ans="C">
+        <div class="mc-opt" onclick="selectMC(this,7,'A')"><span class="mc-letter">A</span><span>The Pacific Ocean is more acidic than other oceans.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,7,'B')"><span class="mc-letter">B</span><span>Aquaculture is a declining industry globally.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,7,'C')"><span class="mc-letter">C</span><span>Ocean acidification already has concrete economic consequences.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,7,'D')"><span class="mc-letter">D</span><span>Modern technology can prevent most acidification-related losses.</span></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc8">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">What does the author suggest is the main reason ocean acidification receives less public attention than climate change?</div>
+      <div class="mc-opts" data-q="8" data-ans="A">
+        <div class="mc-opt" onclick="selectMC(this,8,'A')"><span class="mc-letter">A</span><span>People cannot directly experience changes in ocean chemistry in their daily lives.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,8,'B')"><span class="mc-letter">B</span><span>Governments have deliberately suppressed scientific findings on the topic.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,8,'C')"><span class="mc-letter">C</span><span>The effects of acidification are less harmful than those of atmospheric warming.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,8,'D')"><span class="mc-letter">D</span><span>Marine scientists have failed to communicate their findings effectively.</span></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc9">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">Critics of alkaline mineral intervention argue that:</div>
+      <div class="mc-opts" data-q="9" data-ans="D">
+        <div class="mc-opt" onclick="selectMC(this,9,'A')"><span class="mc-letter">A</span><span>The minerals required are too expensive to source at scale.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,9,'B')"><span class="mc-letter">B</span><span>Early trials have not shown any improvement in local pH.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,9,'C')"><span class="mc-letter">C</span><span>The technique is only effective in polar waters.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,9,'D')"><span class="mc-letter">D</span><span>Without cutting CO₂ emissions, chemical buffering can only be a temporary measure.</span></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc10">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">Which of the following best describes the overall argument of the passage?</div>
+      <div class="mc-opts" data-q="10" data-ans="B">
+        <div class="mc-opt" onclick="selectMC(this,10,'A')"><span class="mc-letter">A</span><span>Ocean acidification is a problem that can be solved through technological innovation alone.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,10,'B')"><span class="mc-letter">B</span><span>Ocean acidification is a serious and underappreciated threat that ultimately requires CO₂ reduction.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,10,'C')"><span class="mc-letter">C</span><span>Although damaging to some species, acidification will ultimately benefit marine primary productivity.</span></div>
+        <div class="mc-opt" onclick="selectMC(this,10,'D')"><span class="mc-letter">D</span><span>International agreements have already succeeded in stabilising ocean chemistry.</span></div>
+      </div>
+    </div>
+
+    <!-- Sentence Completion -->
+    <div class="sec-header" style="margin-top:.75rem">
+      <span class="sec-num">Question 11</span>
+      <span class="sec-title">Sentence Completion</span>
+    </div>
+    <div class="sec-instruction">Complete the sentence using <strong>no more than two words</strong> from the passage.</div>
+
+    <div class="q-card" id="qc11">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">According to the passage, the process by which CO₂ dissolves in seawater and lowers the pH of the ocean is known as ocean</div>
+      <div style="margin-top:8px">
+        <input class="fill-input" id="q11" type="text" placeholder="your answer…" autocomplete="off" spellcheck="false">
+        <div class="fill-hint">No more than two words from the passage</div>
+      </div>
+    </div>
+
+    <div class="submit-section">
+      <button class="submit-btn" id="submitBtn" onclick="submitTest()">Submit all answers</button>
+    </div>
+
+    <div class="result-card" id="resultCard">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Estimated IELTS Band</div>
+      <div class="band-display">
+        <div class="band-number" id="bandNum">—</div>
+      </div>
+      <div class="band-sub" id="bandDesc">—</div>
+
+      <div class="score-pills">
+        <div class="pill"><div class="pill-num" id="scTotal">—</div><div class="pill-lbl">Total / 11</div></div>
+        <div class="pill"><div class="pill-num" id="scTFNG">—</div><div class="pill-lbl">TFNG / 5</div></div>
+        <div class="pill"><div class="pill-num" id="scMC">—</div><div class="pill-lbl">MC / 5</div></div>
+        <div class="pill"><div class="pill-num" id="scFill">—</div><div class="pill-lbl">Fill / 1</div></div>
+      </div>
+
+      <table class="band-chart">
+        <thead><tr><th>Score</th><th>Band</th><th>Proficiency</th></tr></thead>
+        <tbody id="bandBody"></tbody>
+      </table>
+
+      <div class="answer-key" id="answerKey">
+        <div class="ak-title">Answer summary</div>
+        <div class="ak-grid" id="akGrid"></div>
+      </div>
+
+      <div class="result-actions" style="margin-top:1rem">
+        <button class="action-btn" onclick="location.reload()">&#8635; Retry test</button>
+        <button class="action-btn primary" onclick="window.print()">&#128438; Print</button>
+      </div>
+    </div>
+
+  </div><!-- /questions-col -->
+</div><!-- /layout -->
+
+<script>
+const ANSWERS = {
+  1:'FALSE', 2:'TRUE', 3:'NOT GIVEN', 4:'FALSE', 5:'TRUE',
+  6:'B', 7:'C', 8:'A', 9:'D', 10:'B',
+  11:'acidification'
+};
+
+const BAND_MAP = [
+  {min:11,max:11,band:'8.5 – 9.0',level:'Expert'},
+  {min:10,max:10,band:'8.0',level:'Very good'},
+  {min:9,max:9,band:'7.5',level:'Good'},
+  {min:8,max:8,band:'7.0',level:'Competent'},
+  {min:7,max:7,band:'6.5',level:'Competent'},
+  {min:6,max:6,band:'6.0',level:'Modest'},
+  {min:5,max:5,band:'5.5',level:'Modest'},
+  {min:4,max:4,band:'5.0',level:'Limited'},
+  {min:3,max:3,band:'4.5',level:'Limited'},
+  {min:0,max:2,band:'4.0 or below',level:'Extremely limited'},
+];
+
+const userAnswers = {};
+let timerInterval = null, seconds = 1200, running = false;
+
+function pad(n){ return n.toString().padStart(2,'0'); }
+function updateTimerDisplay(){
+  document.getElementById('timer').textContent = pad(Math.floor(seconds/60))+':'+pad(seconds%60);
+}
+function toggleTimer(){
+  const btn = document.getElementById('tbtn');
+  if(!running){
+    timerInterval = setInterval(()=>{ seconds--; updateTimerDisplay(); if(seconds<=0){ clearInterval(timerInterval); submitTest(); } },1000);
+    running = true; btn.textContent = '⏸ Pause';
+  } else {
+    clearInterval(timerInterval); running = false; btn.textContent = '▶ Resume';
+  }
+}
+
+function selectTFNG(el, q, val){
+  if(document.getElementById('submitBtn').disabled) return;
+  const container = el.closest('.tfng-opts');
+  container.querySelectorAll('.tfng-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  userAnswers[q] = val;
+}
+
+function selectMC(el, q, val){
+  if(document.getElementById('submitBtn').disabled) return;
+  const container = el.closest('.mc-opts');
+  container.querySelectorAll('.mc-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  userAnswers[q] = val;
+}
+
+function submitTest(){
+  clearInterval(timerInterval); running = false;
+  document.getElementById('tbtn').textContent = '⏹ Ended';
+  document.getElementById('submitBtn').disabled = true;
+
+  let total=0, tfng=0, mc=0, fill=0;
+  const akItems = [];
+
+  for(let q=1; q<=5; q++){
+    const container = document.querySelector(`.tfng-opts[data-q="${q}"]`);
+    const correct = ANSWERS[q];
+    const given = userAnswers[q] || null;
+    const isRight = given === correct;
+    if(isRight){ total++; tfng++; }
+    container.querySelectorAll('.tfng-btn').forEach(b=>{
+      const v = b.textContent.trim();
+      b.disabled = true;
+      if(v === correct && !isRight) b.classList.add('show-correct');
+      if(v === given){
+        b.classList.remove('selected');
+        b.classList.add(isRight ? 'correct' : 'wrong');
+      }
+    });
+    akItems.push({q, given: given||'—', correct, right: isRight});
+  }
+
+  for(let q=6; q<=10; q++){
+    const container = document.querySelector(`.mc-opts[data-q="${q}"]`);
+    const correct = ANSWERS[q];
+    const given = userAnswers[q] || null;
+    const isRight = given === correct;
+    if(isRight){ total++; mc++; }
+    container.querySelectorAll('.mc-opt').forEach(opt=>{
+      const v = opt.querySelector('.mc-letter').textContent.trim();
+      opt.style.cursor = 'default';
+      if(v === correct && !isRight) opt.classList.add('show-correct');
+      if(v === given){
+        opt.classList.remove('selected');
+        opt.classList.add(isRight ? 'correct' : 'wrong');
+      }
+    });
+    akItems.push({q, given: given||'—', correct, right: isRight});
+  }
+
+  const inp = document.getElementById('q11');
+  const fillVal = inp.value.trim().toLowerCase();
+  const fillRight = fillVal === 'acidification';
+  if(fillRight){ total++; fill++; }
+  inp.disabled = true;
+  inp.classList.add(fillRight ? 'correct' : 'wrong');
+  akItems.push({q:11, given: inp.value.trim()||'—', correct: ANSWERS[11], right: fillRight});
+
+  const band = BAND_MAP.find(b=>total>=b.min && total<=b.max);
+  document.getElementById('bandNum').textContent = band.band;
+  document.getElementById('bandDesc').textContent = band.level;
+  document.getElementById('scTotal').textContent = total+'/11';
+  document.getElementById('scTFNG').textContent = tfng+'/5';
+  document.getElementById('scMC').textContent = mc+'/5';
+  document.getElementById('scFill').textContent = fill+'/1';
+
+  const tbody = document.getElementById('bandBody');
+  BAND_MAP.forEach(b=>{
+    const tr = document.createElement('tr');
+    const range = b.min===b.max ? b.min : b.min+'–'+b.max;
+    tr.innerHTML = `<td>${range}</td><td>${b.band}</td><td>${b.level}</td>`;
+    if(b===band) tr.classList.add('active');
+    tbody.appendChild(tr);
+  });
+
+  const grid = document.getElementById('akGrid');
+  akItems.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'ak-item '+(item.right?'ak-right':'ak-wrong');
+    div.innerHTML = `<span class="aq-n">Q${item.q}</span><span class="aq-a">${item.right ? item.given : item.correct}</span>`;
+    grid.appendChild(div);
+  });
+
+  const rc = document.getElementById('resultCard');
+  rc.classList.add('show');
+  rc.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>
